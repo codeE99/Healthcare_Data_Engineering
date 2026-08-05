@@ -69,10 +69,13 @@ def run():
     print(pd.io.sql.get_schema(doctor_df, name='Doctor'))
     print(pd.io.sql.get_schema(case_df, name='Case'))
 
-    patient_df.head(0).to_sql(name='Patient', con=engine, if_exists='replace')
-    doctor_df.head(0).to_sql(name='Doctor', con=engine, if_exists='replace')
-    hospital_df.head(0).to_sql(name='Hospital', con=engine, if_exists='replace')
-    case_df.head(0).to_sql(name='Case', con=engine, if_exists='replace')
+    first=True
+    if first==True:
+        patient_df.head(0).to_sql(name='Patient', con=engine, if_exists='replace')
+        doctor_df.head(0).to_sql(name='Doctor', con=engine, if_exists='replace')
+        hospital_df.head(0).to_sql(name='Hospital', con=engine, if_exists='replace')
+        case_df.head(0).to_sql(name='Case', con=engine, if_exists='replace')
+        first=False
 
     patient_df.to_sql(name='Patient', con=engine, if_exists='append', index=False, chunksize=5000)
     doctor_df.to_sql(name='Doctor', con=engine, if_exists='append', index=False, chunksize=5000 )
