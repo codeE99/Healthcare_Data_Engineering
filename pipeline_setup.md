@@ -60,6 +60,28 @@ I also added some IDs for some of the tables as primary keys:
 
 ![case](./image/case_data.png)
 
+We use our Dockerfile to take our script and turn it into a Docker Image. This ensures we don't need to download every dependency to make our 
+script work:
+
+`docker build -t pipeline:v01 .`
+
+Then, we use docker run to create a container (CLI arguments use os.environ.get to feed the information into our engine):
+
+`docker run --rm -it \
+--network healthcare_data_engineering_default \
+-e DB_USER="$DB_USER" \
+-e DB_PASSWORD="$DB_PASSWORD" \
+-e DB_NAME="$DB_NAME" \
+-e DB_HOST=pgdatabase \
+-e DB_PORT=5432 \
+-e KAGGLE_USERNAME="$KAGGLE_USERNAME" \
+-e KAGGLE_KEY="$KAGGLE_KEY" \
+pipeline:v01`
+
+From here, we first add the table names to PostgreSQL (and use replace to prevent redundancy when repeating our script):
+
+![table_heads](./image/table_heads.png)
+
 And now I finally add the data to the PostgreSQL database:
 
 ![to Postgre](./image/load_to_database.png)
